@@ -1,26 +1,40 @@
-var app = require('http').createServer(handler)
-var io = require('socket.io')(app)
-var fs = require('fs')
+'use strict'
 
-app.listen(8080)
+const path = require('path')
+const Koa = require('koa')
+const Router = require('koa-router')
+const createKoaStaticMiddleware = require('koa-static')
 
-function handler (req, res) {
-  fs.readFile(__dirname + '/index.html',
-    function (err, data) {
-      if (err) {
-        res.writeHead(500)
-        return res.end('Error loading index.html')
-      }
+const app = new Koa()
+const router = new Router()
+const views = initViews()
+const staticPath = path.resolve(__dirname, '../public')
+const koaStatic = createKoaStaticMiddleware(staticPath)
 
-      res.writeHead(200)
-      res.end(data)
-    })
+const homeModule = require(path.resolve(__dirname, './home'))
+
+app
+  .use(koaStatic)
+  .use(views)
+  .use(router.routes())
+  .use(router.allowedMethods())
+
+homeModule.init(router)
+
+function initViews () {
+  const nunjucks = require('nunjucks')
+  const createViews = require('koa-views')
+  const viewDirPath = __dirname
+  const env = new nunjucks.Environment(
+    new nunjucks.FileSystemLoader(viewDirPath)
+  )
+
+  return createViews(viewDirPath, {
+    map: { html: 'nunjucks' },
+    options: {
+      nunjucksEnv: env
+    }
+  })
 }
 
-io.on('connection', function (socket) {
-  console.log(`User ${socket.conn.id} is connected! IP: ${socket.request.connection.remoteAddress}`)
-
-  socket.on('chat:message', function (data) {
-    io.emit('chat:message', data)
-  })
-})
+module.exports = app
