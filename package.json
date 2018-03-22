@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "socket.io": "^2.0.4"
+  },
+  "name": "mess-realtime",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "illuminati",
+  "license": "MIT"
+}
