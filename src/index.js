@@ -2,7 +2,7 @@
 
 const app = require('./app')
 
-const port = process.env.PORT || '6969'
+const port = process.env.PORT || '8080'
 const server = app.listen(port)
 
 const io = require('socket.io').listen(server)

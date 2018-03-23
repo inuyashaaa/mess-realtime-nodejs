@@ -7,7 +7,7 @@
     var $questionArea = $('.question')
     var $username = $questionArea.find('#name')
     var username = ''
-    var socket = io('http://localhost:6969')
+    var socket = io('http://localhost:8080')
     var $formMessage = $('#form-message')
     var $roomChat = $('.message-room')
     var $message = $formMessage.find('input')
