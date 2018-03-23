@@ -7,7 +7,7 @@
     var $questionArea = $('.question')
     var $username = $questionArea.find('#name')
     var username = ''
-    var socket = io('http://ec2-54-210-125-188.compute-1.amazonaws.com')
+    var socket = io('http://192.84.4.220:6969')
     var $formMessage = $('#form-message')
     var $roomChat = $('.message-room')
     var $message = $formMessage.find('input')
